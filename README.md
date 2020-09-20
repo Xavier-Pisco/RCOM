@@ -15,8 +15,8 @@ Professor Práticas - *undefined*
 
 |Designação|Peso|Nota Mínima|
 |-|-|-|
-|Exame|60%|8|
-|Trabalho laboratorial|40%|8|
+|Exame|60%|40%|
+|Trabalho laboratorial|40%|40%|
 
 |Trabalho laboratorial|Peso|Nota Mínima|
 |-|-|-|
@@ -26,5 +26,15 @@ Professor Práticas - *undefined*
 
 Nota: Classificação final <= Exame + 5
 
+---
 
+## Datas
+
+---
+
+## Teóricas
+
+---
+
+## Práticas
 

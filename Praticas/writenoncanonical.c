@@ -10,7 +10,7 @@
 #include <string.h>
 
 #define BAUDRATE B38400
-#define MODEMDEVICE "/dev/ttyS11"
+#define MODEMDEVICE "/dev/ttyS1"
 #define _POSIX_SOURCE 1 /* POSIX compliant source */
 #define FALSE 0
 #define TRUE 1
@@ -27,7 +27,7 @@ int main(int argc, char** argv)
     if ( (argc < 2) || 
   	     ((strcmp("/dev/ttyS10", argv[1])!=0) && 
   	      (strcmp("/dev/ttyS11", argv[1])!=0) )) {
-      printf("Usage:\t%s SerialPort\n\tex: %s /dev/ttyS1\n", argv[0], argv[0]);
+      printf("Usage:\tnserial SerialPort\n\tex: nserial /dev/ttyS1\n");
       exit(1);
     }
 
@@ -76,33 +76,17 @@ int main(int argc, char** argv)
     printf("New termios structure set\n");
 
 
-
-    for (i = 0; i < 255; i++) {
-      buf[i] = 'z';
-    }
+    gets(buf);
     
-    /*testing*/
-    buf[25] = '\0';
-    
-    res = write(fd,buf,255);   
+    res = write(fd,buf,strlen(buf));   
     printf("%d bytes written\n", res);
  
+    
+    char s[255];
 
-  /* 
-    O ciclo FOR e as instru��es seguintes devem ser alterados de modo a respeitar 
-    o indicado no gui�o 
-  */
+    read(fd, s, 255);
 
-    char returnmsg[255];
-    char x = 'a';
-    i = 0;
-
-    while(x != '\0'){
-      read(fd,&x,1);
-      returnmsg[i++] = x;
-    }
-
-    printf("Return message: %s\n", returnmsg);
+    printf("Received response: \"%s\"\n", s);
 
    
     if ( tcsetattr(fd,TCSANOW,&oldtio) == -1) {

@@ -18,7 +18,7 @@ volatile int STOP=FALSE;
 
 int main(int argc, char** argv)
 {
-    int fd,c, res, bytes_read = 0;
+    int fd,c, res;
     struct termios oldtio,newtio;
     char buf[255];
 
@@ -73,27 +73,22 @@ int main(int argc, char** argv)
 
     printf("New termios structure set\n");
 
+    int bytes_read = 0;
+
     while (STOP==FALSE) {       /* loop for input */
       res = read(fd,buf,255);   /* returns after 5 chars have been input */
-      buf[res]='\0';               /* so we can printf... */
+      buf[res]=0;               /* so we can printf... */
       printf(":%s:%d\n", buf, res);
-      if (buf[0]=='\0') STOP=TRUE;
       bytes_read += res;
+      if (buf[res]=='\0') STOP=TRUE;
     }
+
 
     printf("%d bytes read.\n", bytes_read);
 
-  /* 
-    O ciclo WHILE deve ser alterado de modo a respeitar o indicado no gui�o 
-  */
+    write(fd, buf, bytes_read);
 
-    char msg[255];
-    sprintf(msg, "%d bytes read from port.\n",bytes_read);
-
-    write(fd, &msg, strlen(msg) + 1);
-
-    printf("Wrote response\n");
-
+    printf("Return message sent\n");
 
     tcsetattr(fd,TCSANOW,&oldtio);
     close(fd);

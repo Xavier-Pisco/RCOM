@@ -16,9 +16,9 @@
 #define TRUE 1
 #define ENDERECOEMISSOR 0x03
 #define ENDERECORECETOR 0x01
-#define FLAG 01111110
-#define SET 00000011
-#define UA 00000111
+#define FLAG 0x7e
+#define SET 0x03
+#define UA 0x07
 
 volatile int STOP=FALSE;
 
@@ -30,8 +30,8 @@ int main(int argc, char** argv)
     int i, sum = 0, speed = 0;
 
     if ( (argc < 2) ||
-  	     ((strcmp("/dev/ttyS0", argv[1])!=0) &&
-  	      (strcmp("/dev/ttyS1", argv[1])!=0) )) {
+  	     ((strcmp("/dev/ttyS10", argv[1])!=0) &&
+  	      (strcmp("/dev/ttyS11", argv[1])!=0) )) {
       printf("Usage:\tnserial SerialPort\n\tex: nserial /dev/ttyS1\n");
       exit(1);
     }
@@ -79,20 +79,20 @@ int main(int argc, char** argv)
 
     printf("New termios structure set\n");
 
-    char buffer[5];
+    unsigned char buffer[5];
     buffer[0] = FLAG;
     buffer[1] = ENDERECOEMISSOR;
     buffer[2] = SET;
     buffer[3] = 0x0;
     buffer[4] = FLAG;
 
-    write(fd, buffer, 5);
+    write(fd, &buffer[0], 5);
 
-    printf("wrote\n");
+    printf("wrote %x %x %x %x %x\n", buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
 
     res = read(fd, buffer, 5);
 
-    printf("Read %d bytes\n", res);
+    printf("Read %d bytes, %x %x %x %x %x\n", res, buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
 
     if ( tcsetattr(fd,TCSANOW,&oldtio) == -1) {
       perror("tcsetattr");

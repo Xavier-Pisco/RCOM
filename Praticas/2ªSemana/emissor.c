@@ -79,14 +79,15 @@ int main(int argc, char** argv)
 
     printf("New termios structure set\n");
 
-    unsigned char buffer[5];
+    unsigned char buffer[6];
     buffer[0] = FLAG;
     buffer[1] = ENDERECOEMISSOR;
     buffer[2] = SET;
-    buffer[3] = 0x0;
+    buffer[3] = 0x01;
     buffer[4] = FLAG;
+    buffer[5] = '\0';
 
-    write(fd, &buffer[0], 5);
+    write(fd, buffer, 6);
 
     printf("wrote %x %x %x %x %x\n", buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
 

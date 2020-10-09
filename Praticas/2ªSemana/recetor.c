@@ -79,19 +79,20 @@ int main(int argc, char** argv)
 
     printf("New termios structure set\n");
 
-    unsigned char buffer[5];
+    unsigned char buffer[6];
     
-    res = read(fd, buffer, 5);
+    res = read(fd, buffer, 6);
 
     printf("Read %d bytes, %x %x %x %x %x\n", res, buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
 
     buffer[0] = FLAG;
     buffer[1] = ENDERECORECETOR;
     buffer[2] = UA;
-    buffer[3] = 0x0;
+    buffer[3] = 0x01;
     buffer[4] = FLAG;
+    buffer[5] = '\0';
 
-    write(fd, buffer, 5);
+    write(fd, buffer, 6);
 
     printf("wrote %x %x %x %x %x\n", buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
 

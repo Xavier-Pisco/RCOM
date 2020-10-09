@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <signal.h>
 
 #define BAUDRATE B38400
 #define MODEMDEVICE "/dev/ttyS1"
@@ -22,18 +23,40 @@
 
 volatile int STOP=FALSE;
 
+int flag=1, conta=1;
+int fd;
+unsigned char buffer[6];
+
+void atende()                   // atende alarme
+{
+
+	buffer[0] = FLAG;
+	buffer[1] = ENDERECOEMISSOR;
+	buffer[2] = SET;
+	buffer[3] = 0x01;
+	buffer[4] = FLAG;
+	buffer[5] = '\0';
+
+	write(fd, buffer, 6);
+	printf("write # %d\n", conta);
+
+
+	flag=1;
+	conta++;
+}
+
 int main(int argc, char** argv)
 {
-    int fd,c, res;
+    int c, res;
     struct termios oldtio,newtio;
     char buf[255];
     int i, sum = 0, speed = 0;
 
     if ( (argc < 2) ||
-  	     ((strcmp("/dev/ttyS10", argv[1])!=0) &&
-  	      (strcmp("/dev/ttyS11", argv[1])!=0) )) {
-      printf("Usage:\tnserial SerialPort\n\tex: nserial /dev/ttyS1\n");
-      exit(1);
+			((strcmp("/dev/ttyS10", argv[1])!=0) &&
+			(strcmp("/dev/ttyS11", argv[1])!=0) )) {
+		printf("Usage:\tnserial SerialPort\n\tex: nserial /dev/ttyS1\n");
+		exit(1);
     }
 
 
@@ -47,8 +70,8 @@ int main(int argc, char** argv)
     if (fd <0) {perror(argv[1]); exit(-1); }
 
     if ( tcgetattr(fd,&oldtio) == -1) { /* save current port settings */
-      perror("tcgetattr");
-      exit(-1);
+		perror("tcgetattr");
+		exit(-1);
     }
 
     bzero(&newtio, sizeof(newtio));
@@ -73,13 +96,15 @@ int main(int argc, char** argv)
     tcflush(fd, TCIOFLUSH);
 
     if ( tcsetattr(fd,TCSANOW,&newtio) == -1) {
-      perror("tcsetattr");
-      exit(-1);
+		perror("tcsetattr");
+		exit(-1);
     }
 
     printf("New termios structure set\n");
 
-    unsigned char buffer[6];
+    (void) signal(SIGALRM, atende);  // instala  rotina que atende interrupcao
+
+
     buffer[0] = FLAG;
     buffer[1] = ENDERECOEMISSOR;
     buffer[2] = SET;
@@ -89,11 +114,28 @@ int main(int argc, char** argv)
 
     write(fd, buffer, 6);
 
-    printf("wrote %x %x %x %x %x\n", buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
+   	printf("write # %d\n", conta);
+	conta++;
 
-    res = read(fd, buffer, 5);
 
-    printf("Read %d bytes, %x %x %x %x %x\n", res, buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
+    while(conta < 5){
+      	if(flag){
+          	alarm(3);                 // activa alarme de 3s
+          	flag=0;
+          	res = read(fd, buffer, 5);
+            printf("Read %d bytes, %x %x %x %x %x\n", res, buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
+
+
+			if (buffer[0] == FLAG && buffer[4] == FLAG && buffer[1] == ENDERECORECETOR) {
+				break;
+			}
+     	}
+    }
+
+	if (buffer[0] != FLAG || buffer[4] != FLAG || buffer[1] != ENDERECORECETOR){
+		printf("Couldn't receive response\n");
+	}
+
 
     if ( tcsetattr(fd,TCSANOW,&oldtio) == -1) {
       perror("tcsetattr");

@@ -90,7 +90,7 @@ int main(int argc, char** argv)
         buffer[0] = FLAG;
         buffer[1] = ENDERECORECETOR;
         buffer[2] = UA;
-        buffer[3] = 0x01;
+        buffer[3] = FLAG ^ ENDERECORECETOR ^ UA;
         buffer[4] = FLAG;
         buffer[5] = '\0';
 

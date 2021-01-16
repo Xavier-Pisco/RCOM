@@ -1,0 +1,30 @@
+1º: Cabos
+
+	tuxY3 S0 -> T3
+	tuxY2 E0 -> Porta 1 da switch
+	tuxY3 E0 -> Porta 5 da switch
+	tuxY4 E0 -> Porta 9 da switch
+	tuxY4 E1 -> Porta 13 da switch
+	1.1 -> Router GE 0/1
+    Router GE 0/0 -> Porta 17 da switch
+
+2º: Configurar PCs
+
+	Para cada um dos pcs correr o script correspondente
+		Exemplo para o PC2:
+			chmod +x tuxY2
+			./tuxY2 nºbancada
+
+3º: Configurar switch
+
+	Ligar um cabo de T4 -> Switch Console
+	No pc3 executar os comandos do ficheiro switch.txt no GTKTerm
+
+4º: Configurar Router
+
+	Trocar o ultimo cabo para T4 -> Router Console
+	No pc3 executar os comandos do ficheiro router.txt no GTKTerm
+
+5º: Fazer pings entre todos os computadores e routers
+
+6º: Perceber que houve algum erro e deixar para o ano

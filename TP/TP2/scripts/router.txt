@@ -1,0 +1,23 @@
+Se algum dos comandos abaixo (exceto o conf t) der erro, deixar para o ano
+
+1 -	Fazer reset do router.
+2 - conf t
+3 - interface gigabitethernet 0/0
+4 - ip address 172.16.y1.254 255.255.255.0
+5 - no shutdown
+6 - ip nat inside
+7 - exit
+8 - conf t
+9 - interface gigabitethernet 0/1
+10 - ip address 172.16.1.y9 255.255.255.0
+11 - no shutdown
+12 - ip nat outside
+13 - exit
+14 - conf t
+15 - ip nat pool ovrld 172.16.1.y9 172.16.1.y9 prefix 24
+16 - ip nat inside source list 1 pool ovrld overload
+17 - access-list 1 permit 172.16.y0.0 0.0.0.7
+18 - access-list 1 permit 172.16.y1.0 0.0.0.7
+19 - ip route 0.0.0.0 0.0.0.0 172.16.1.254
+20 - ip route 172.16.y0.0 255.255.255.0 172.16.y1.253
+21 - end

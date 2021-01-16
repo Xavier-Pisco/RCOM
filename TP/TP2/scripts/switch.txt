@@ -1,0 +1,44 @@
+Se algum dos comandos abaixo (exceto o conf t) der erro, deixar para o ano
+
+1 - Fazer reset da switch.
+2 - enable
+2 - conf t
+3 - vlan y0
+4 - end
+5 - conf t
+6 - vlan y1
+7 - end
+8 - conf t
+9 - interface fastethernet 0/1
+10 - switchport mode access
+11 - switchport access vlan y1
+12 - end
+13 - conf t
+14 - interface fastethernet 0/5
+15 - switchport mode access
+16 - switchport access vlan y0
+17 - end
+18 - conf t
+19 - interface fastethernet 0/9
+20 - switchport mode access
+21 - switchport access vlan y0
+22 - end
+23 - conf t
+24 - interface fastethernet 0/13
+25 - switchport mode access
+26 - switchport access vlan y1
+27 - end
+28 - conf t
+29 - interface fastethernet 0/17
+30 - switchport mode access
+31 - switchport access vlan y1
+32 - end
+
+
+show running-config
+show vlan
+
+default								fe0/Y, fe0/Y, fe0/Y, fe0/Y
+Y0									fe0/5, fe0/9
+y1									fe0/1, fe0/13, fe0/17
+...

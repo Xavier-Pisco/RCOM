@@ -7,12 +7,6 @@
 Repositório da cadeira *Redes de Computadores* no ano lectivo 2020-21.
 
 
-Professor Teóricas - Manuel Ricardo
-<br>
-Professor Práticas - *undefined*
-
-<br>
-
 |Designação|Peso|Nota Mínima|
 |-|-|-|
 |Exame|60%|40%|
@@ -25,16 +19,3 @@ Professor Práticas - *undefined*
 |Trabalhos de casa|20%|-|
 
 Nota: Classificação final <= Exame + 5
-
----
-
-## Datas
-
----
-
-## Teóricas
-
----
-
-## Práticas
-
